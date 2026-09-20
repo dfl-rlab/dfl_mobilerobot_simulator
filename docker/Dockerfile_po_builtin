@@ -1,0 +1,111 @@
+# ============================================================================
+# docker build -t dddmr_simulation:ackermann -f Dockerfile_po_builtin .
+# ============================================================================
+
+ARG ROS_DISTRO=jazzy
+FROM ros:${ROS_DISTRO}
+
+ENV COLCON_WS=/ws_ackermann
+ENV COLCON_WS_SRC=/ws_ackermann/src
+ENV PYTHONWARNINGS="ignore:setup.py install is deprecated::setuptools.command.install"
+ENV DEBIAN_FRONTEND=noninteractive
+
+ARG GZ_VERSION=harmonic
+
+# --- Basic tools ---
+RUN apt-get update -qq \
+    && apt-get install -y \
+    wget git nano \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- Gazebo apt source ---
+RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" > /etc/apt/sources.list.d/gazebo-stable.list
+
+# --- All dependencies (Gazebo + ROS 2 packages) ---
+# From original Dockerfile + all package.xml deps so colcon build can pass
+RUN apt-get update -qq \
+    && apt-get install -y \
+    # --- Gazebo Sim ---
+    gz-${GZ_VERSION} \
+    # --- Build tooling ---
+    build-essential \
+    python3-pip \
+    python3-colcon-common-extensions \
+    ros-dev-tools \
+    # --- Original Dockerfile deps ---
+    ros-${ROS_DISTRO}-rcl-interfaces \
+    ros-${ROS_DISTRO}-rclcpp \
+    ros-${ROS_DISTRO}-builtin-interfaces \
+    ros-${ROS_DISTRO}-ros-gz \
+    ros-${ROS_DISTRO}-sdformat-urdf \
+    ros-${ROS_DISTRO}-vision-msgs \
+    ros-${ROS_DISTRO}-actuator-msgs \
+    ros-${ROS_DISTRO}-image-transport \
+    ros-${ROS_DISTRO}-nav2-* \
+    ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
+    # --- saye_description deps ---
+    ros-${ROS_DISTRO}-robot-state-publisher \
+    ros-${ROS_DISTRO}-xacro \
+    # --- saye_bringup deps ---
+    ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    ros-${ROS_DISTRO}-slam-toolbox \
+    # --- saye_control deps ---
+    ros-${ROS_DISTRO}-rclpy \
+    ros-${ROS_DISTRO}-sensor-msgs \
+    ros-${ROS_DISTRO}-geometry-msgs \
+    ros-${ROS_DISTRO}-std-msgs \
+    ros-${ROS_DISTRO}-nav-msgs \
+    ros-${ROS_DISTRO}-nav2-msgs \
+    # --- saye_msgs deps (custom msg/srv generation) ---
+    ros-${ROS_DISTRO}-rosidl-default-generators \
+    ros-${ROS_DISTRO}-rosidl-default-runtime \
+    # --- launch file direct deps (avoid relying on nav2-* transitive) ---
+    ros-${ROS_DISTRO}-tf2-ros \
+    ros-${ROS_DISTRO}-rviz2 \
+    ros-${ROS_DISTRO}-lifecycle-msgs \
+    # --- ackermann feedback & teleoperation ---
+    ros-${ROS_DISTRO}-ackermann-msgs \
+    ros-${ROS_DISTRO}-teleop-twist-keyboard \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- explore_lite (may not have binary for jazzy; install if available) ---
+RUN apt-get update -qq \
+    && apt-get install -y ros-${ROS_DISTRO}-explore-lite 2>/dev/null \
+    || echo "[WARN] ros-${ROS_DISTRO}-explore-lite not found as binary. You need to git clone m-explore-ros2 into src/ and colcon build it." \
+    && rm -rf /var/lib/apt/lists/*
+
+# ============================================================================
+# Clone the repo (public) and build inside the image
+# ============================================================================
+
+# Create workspace src directory
+RUN mkdir -p ${COLCON_WS_SRC}
+
+# Clone upstream unchanged and install this integration beside it.
+ARG UPSTREAM_REF=main
+ARG PLUGIN_REF=ackermann
+RUN git clone --depth 1 --branch ${UPSTREAM_REF} \
+      https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2.git \
+      ${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2 \
+    && git clone --depth 1 --branch ${PLUGIN_REF} \
+      https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git \
+      ${COLCON_WS_SRC}/dfl_mobilerobot_simulator
+
+# --- Build the workspace ---
+SHELL ["/bin/bash", "-c"]
+RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
+    && cd ${COLCON_WS} \
+    && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+# --- Environment: resource & plugin paths ---
+ENV GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2
+ENV ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2
+
+# --- Source ROS + workspace on shell startup ---
+RUN echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /root/.bashrc && \
+    echo 'if [ -f ${COLCON_WS}/install/setup.bash ]; then source ${COLCON_WS}/install/setup.bash; fi' >> /root/.bashrc
+
+WORKDIR ${COLCON_WS}
+
+CMD ["bash"]
