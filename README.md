@@ -32,3 +32,9 @@ The script creates the `dddmr_ackermann` container and starts the Saye robot in 
 ## Run navigation
 
 Open another terminal and follow the [DDDMR Ackermann navigation tutorial](https://github.com/dfl-rlab/dddmr_navigation/blob/main/src/dddmr_p2p_move_base/kinematics_md/ACKERMANN.md) to prepare the map, start the navigation stack, and run the P2P test.
+
+## Acknowledgements
+
+This project builds on the excellent work from [ackermann-vehicle-gzsim-ros2](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2).
+We are grateful to the original author for integrating the Saye Ackermann vehicle with ROS 2 and Gazebo.
+The original authors deserve full credit for the core simulation — our contribution adds support for DDDMR navigation demos.
