@@ -14,7 +14,7 @@ docker build -t dddmr_simulation:ackermann -f Dockerfile_po_builtin .
 ```
 
 The image uses ROS 2 Jazzy and Gazebo Harmonic. Its Dockerfile clones both repositories into `/ws_ackermann/src` and builds them together:
-有修改原碼」
+
 ```text
 /ws_ackermann/src/
 ├── ackermann-vehicle-gzsim-ros2/  # Upstream source
