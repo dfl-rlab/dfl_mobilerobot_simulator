@@ -1,0 +1,42 @@
+# Build: docker build -t dddmr_gz:humble -f Dockerfile_x64_gazebo .
+FROM ros:humble
+
+SHELL ["/bin/bash", "-c"]
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git build-essential cmake python3-colcon-common-extensions \
+    ros-humble-ament-cmake-python \
+    ros-humble-ament-lint-auto \
+    ros-humble-ament-lint-common \
+    ros-humble-gazebo-ros-pkgs \
+    ros-humble-robot-state-publisher \
+    ros-humble-joint-state-publisher-gui \
+    ros-humble-rviz2 \
+    ros-humble-joy \
+    ros-humble-ecl-threads \
+    ros-humble-gazebo-ros2-control \
+    ros-humble-xacro \
+    ros-humble-robot-localization \
+    ros-humble-ros2-controllers \
+    ros-humble-ros2-control \
+    ros-humble-velodyne \
+    ros-humble-velodyne-gazebo-plugins \
+    ros-humble-velodyne-description \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone the original project, then select the version used for the comparison.
+ARG UPSTREAM_COMMIT=fdac259518930c8f03e79189c4d0fdd00fc47483
+RUN mkdir -p /ws_gz/src \
+    && git clone --branch humble https://github.com/anujjain-dev/unitree-go2-ros2.git /ws_gz/src/unitree-go2-ros2 \
+    && git -C /ws_gz/src/unitree-go2-ros2 checkout --detach "${UPSTREAM_COMMIT}"
+
+# Keep our adaptation sources outside the colcon source tree.
+ARG SIMULATOR_REF=go2
+RUN git clone --depth 1 --branch "${SIMULATOR_REF}" \
+    https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git /opt/dfl_mobilerobot_simulator \
+    && bash /opt/dfl_mobilerobot_simulator/scripts/apply_go2_changes.bash /ws_gz/src/unitree-go2-ros2
+
+WORKDIR /ws_gz
+RUN source /opt/ros/humble/setup.bash \
+    && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+CMD ["bash"]
