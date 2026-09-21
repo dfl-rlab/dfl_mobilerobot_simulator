@@ -1,10 +1,10 @@
-# Ackermann Simulation Plugin
+# Ackermann Gazebo Simulation
 
-Additional integration for DDDMR navigation with the [Saye Gazebo simulation](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2). The upstream repository is cloned unchanged during the Docker image build. This repository contains the additional feedback node, joint-state bridge, launch integration, and Docker setup.
+Explore DDDMR navigation with the [Saye Ackermann simulation](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2), using ROS 2 Jazzy and Gazebo Harmonic. This repository provides the Docker setup and supporting integration to get the simulation ready for navigation demos.
 
 ## Build the image
 
-Run on the host:
+With Docker installed, run these commands on the host:
 
 ```bash
 cd ~
@@ -13,24 +13,22 @@ cd dfl_mobilerobot_simulator/docker
 docker build -t dddmr_simulation:ackermann -f Dockerfile_po_builtin .
 ```
 
-The image uses ROS 2 Jazzy and Gazebo Harmonic. Its Dockerfile clones both repositories into `/ws_ackermann/src` and builds them together:
-
-```text
-/ws_ackermann/src/
-├── ackermann-vehicle-gzsim-ros2/  # Upstream source
-└── dfl_mobilerobot_simulator/
-    ├── utils/
-    └── ackermann_plugin_bringup/
-```
+The image includes the simulation and a compiled ROS workspace, ready to launch.
 
 ## Start Gazebo
 
-From this repository's `docker` directory:
+Run on the host:
 
 ```bash
+cd ~/dfl_mobilerobot_simulator/docker
 ./ackermann_bring_up.bash
 ```
 
-This creates the `dddmr_ackermann` container and starts Gazebo through `ackermann_plugin_bringup/ackermann_sim.launch.py`. The launch file includes the original `saye_bringup/saye_spawn.launch.py` with `rviz:=false`, adds a separate Gazebo-to-ROS `/joint_states` bridge, and starts `utils/joint_to_ackermann` to publish `/ackermann_feedback` from `/joint_states` and `/odom`.
+The script creates the `dddmr_ackermann` container and starts the Saye robot in Gazebo, together with the feedback needed for DDDMR navigation. Keep this terminal open while navigating.
 
-Keep the terminal open while navigating. The startup script sets `ROS_DOMAIN_ID=14`; ensure the navigation container uses the same domain ID.
+> [!IMPORTANT]
+> The simulation uses `ROS_DOMAIN_ID=14`. Make sure the navigation container uses the same domain ID before launching navigation.
+
+## Run navigation
+
+Open another terminal and follow the [DDDMR Ackermann navigation tutorial](https://github.com/dfl-rlab/dddmr_navigation/blob/main/src/dddmr_p2p_move_base/kinematics_md/ACKERMANN.md) to prepare the map, start the navigation stack, and run the P2P test.
