@@ -1,6 +1,6 @@
 # Ackermann Gazebo Simulation
 
-Explore DDDMR navigation with the [Saye Ackermann simulation](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2), using ROS 2 Jazzy and Gazebo Harmonic. This repository provides the Docker setup and supporting integration to get the simulation ready for navigation demos.
+Explore DDDMR navigation with the [Saye Ackermann](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2) (Ali, alitekes1) simulation, using ROS 2 Jazzy and Gazebo Harmonic. This repository provides the Docker setup and supporting integration to get the simulation ready for navigation demos.
 
 ## Build the image
 
@@ -9,7 +9,9 @@ With Docker installed, run these commands on the host:
 ```bash
 cd ~
 git clone --branch ackermann https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git
-cd dfl_mobilerobot_simulator/docker
+cd dfl_mobilerobot_simulator
+git submodule update --init --recursive
+cd docker
 docker build -t dddmr_simulation:ackermann -f Dockerfile_po_builtin .
 ```
 
@@ -35,6 +37,6 @@ Open another terminal and follow the [DDDMR Ackermann navigation tutorial](https
 
 ## Acknowledgements
 
-This project builds on the excellent work from [ackermann-vehicle-gzsim-ros2](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2).
+This project builds on the excellent work from [ackermann-vehicle-gzsim-ros2](https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2) (Ali, alitekes1).
 We are grateful to the original author for integrating the Saye Ackermann vehicle with ROS 2 and Gazebo.
 The original authors deserve full credit for the core simulation — our contribution adds support for DDDMR navigation demos.

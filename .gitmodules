@@ -1,0 +1,3 @@
+[submodule "ackermann-vehicle-gzsim-ros2"]
+	path = ackermann-vehicle-gzsim-ros2
+	url = https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2.git

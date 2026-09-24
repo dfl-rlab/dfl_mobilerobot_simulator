@@ -82,15 +82,12 @@ RUN apt-get update -qq \
 # Create workspace src directory
 RUN mkdir -p ${COLCON_WS_SRC}
 
-# Clone upstream unchanged and install this integration beside it.
-ARG UPSTREAM_REF=main
+# Clone this integration and check out the upstream commit pinned by its submodule.
 ARG PLUGIN_REF=ackermann
-RUN git clone --depth 1 --branch ${UPSTREAM_REF} \
-      https://github.com/alitekes1/ackermann-vehicle-gzsim-ros2.git \
-      ${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2 \
-    && git clone --depth 1 --branch ${PLUGIN_REF} \
+RUN git clone --depth 1 --branch ${PLUGIN_REF} \
       https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git \
-      ${COLCON_WS_SRC}/dfl_mobilerobot_simulator
+      ${COLCON_WS_SRC}/dfl_mobilerobot_simulator \
+    && git -C ${COLCON_WS_SRC}/dfl_mobilerobot_simulator submodule update --init --recursive
 
 # --- Build the workspace ---
 SHELL ["/bin/bash", "-c"]
@@ -99,8 +96,8 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
     && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # --- Environment: resource & plugin paths ---
-ENV GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2
-ENV ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:${COLCON_WS_SRC}/ackermann-vehicle-gzsim-ros2
+ENV GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:${COLCON_WS_SRC}/dfl_mobilerobot_simulator/ackermann-vehicle-gzsim-ros2
+ENV ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:${COLCON_WS_SRC}/dfl_mobilerobot_simulator/ackermann-vehicle-gzsim-ros2
 
 # --- Source ROS + workspace on shell startup ---
 RUN echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /root/.bashrc && \
