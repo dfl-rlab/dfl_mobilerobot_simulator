@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.5)
+project(robot_sensors_description)
+
+find_package(ament_cmake REQUIRED)
+find_package(gazebo REQUIRED)
+find_package(gazebo_ros REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
+add_library(dome_lidar_gpu SHARED src/dome_lidar_gpu.cpp)
+target_compile_features(dome_lidar_gpu PRIVATE cxx_std_17)
+target_compile_options(dome_lidar_gpu PRIVATE -Wall -Wextra -Wpedantic)
+target_include_directories(dome_lidar_gpu PRIVATE include)
+target_include_directories(dome_lidar_gpu SYSTEM PRIVATE ${GAZEBO_INCLUDE_DIRS})
+target_link_libraries(dome_lidar_gpu ${GAZEBO_LIBRARIES})
+ament_target_dependencies(dome_lidar_gpu gazebo_ros rclcpp sensor_msgs)
+install(TARGETS dome_lidar_gpu LIBRARY DESTINATION lib)
+ament_environment_hooks(env-hooks/gazebo_plugin_path.dsv.in)
+
+install(DIRECTORY xacro rviz DESTINATION share/${PROJECT_NAME})
+ament_package()

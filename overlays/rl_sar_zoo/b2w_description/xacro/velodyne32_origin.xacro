@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- Modified by Dubai Future Labs - use the standard Gazebo ROS PointCloud2 plugin. -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <gazebo reference="trunk">
+    <sensor name="vlp32" type="gpu_ray">
+      <pose>0.34218 0 0.17851 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>15</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>880</samples><resolution>1</resolution>
+            <min_angle>-3.14159</min_angle><max_angle>3.14159</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>32</samples><resolution>1</resolution>
+            <min_angle>-0.43633</min_angle><max_angle>0.26180</max_angle>
+          </vertical>
+        </scan>
+        <range><min>0.9</min><max>200.0</max><resolution>0.001</resolution></range>
+        <noise><type>gaussian</type><mean>0.0</mean><stddev>0.008</stddev></noise>
+      </ray>
+      <plugin filename="libgazebo_ros_ray_sensor.so" name="velodyne_points">
+        <ros><remapping>~/out:=/velodyne_points</remapping></ros>
+        <output_type>sensor_msgs/PointCloud2</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>

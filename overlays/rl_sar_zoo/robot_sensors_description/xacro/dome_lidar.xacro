@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+    ROS 2 / Gazebo Classic CPU ray or GPU depth-projection sensor. The optical origin is the link origin.
+    At zero mounting rotation, the dome covers local +Z with azimuth 360 degrees,
+    elevation 0..90 degrees (a hemisphere with a 180-degree opening).
+    A +pi/2 pitch turns this into the parent's +X hemisphere.
+    Rays repeat each frame; this is not a Livox non-repeating scan pattern.
+  -->
+  <xacro:macro name="dome_lidar" params="
+      parent name:='dome_lidar' xyz:='0 0 0' rpy:='0 0 0'
+      topic:='/dome_lidar/points' backend:='cpu' gpu_resolution:=512
+      horizontal_samples:=360 vertical_samples:=64 update_rate:=10.0
+      min_range:=0.1 max_range:=60.0 noise_stddev:=0.0
+      mass:=0.265 visualize:=false">
+    <xacro:property name="sensor_backend" value="${['cpu', 'gpu'][['cpu', 'gpu'].index(backend)]}"/>
+    <!-- Representative dome housing, not a calibrated Hesai mechanical model. -->
+    <xacro:property name="radius" value="0.03125"/>
+    <xacro:property name="body_height" value="0.04175"/>
+    <xacro:property name="total_height" value="${body_height + radius}"/>
+
+    <joint name="${name}_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 ${-body_height / 2}"/>
+        <mass value="${mass}"/>
+        <inertia
+            ixx="${mass * (3 * radius**2 + total_height**2) / 12}"
+            iyy="${mass * (3 * radius**2 + total_height**2) / 12}"
+            izz="${mass * radius**2 / 2}"
+            ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+      <visual name="${name}_housing">
+        <origin xyz="0 0 ${-body_height / 2}"/>
+        <geometry><cylinder radius="${radius}" length="${body_height}"/></geometry>
+        <material name="${name}_housing_material"><color rgba="0.12 0.12 0.14 1"/></material>
+      </visual>
+      <!-- The housing encloses the lower half of this sphere. -->
+      <visual name="${name}_dome">
+        <geometry><sphere radius="${radius}"/></geometry>
+        <material name="${name}_dome_material"><color rgba="0.08 0.12 0.18 1"/></material>
+      </visual>
+      <!-- Keep the collision behind the optical plane, so the sensor does not
+           hit its own housing. Robot and obstacle collisions remain detectable. -->
+      <collision name="${name}_housing_collision">
+        <origin xyz="0 0 ${-(body_height + 0.004) / 2}"/>
+        <geometry><cylinder radius="${radius}" length="${body_height - 0.004}"/></geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${name}">
+      <xacro:if value="${sensor_backend == 'cpu'}">
+        <sensor name="${name}_sensor" type="ray">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>${update_rate}</update_rate>
+          <visualize>${visualize}</visualize>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>${horizontal_samples}</samples>
+                <resolution>1</resolution>
+                <min_angle>${-pi}</min_angle>
+                <!-- Do not cast both -pi and +pi; they are the same direction. -->
+                <max_angle>${pi - 2 * pi / horizontal_samples}</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>${vertical_samples}</samples>
+                <resolution>1</resolution>
+                <min_angle>0</min_angle>
+                <max_angle>${pi / 2}</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>${min_range}</min>
+              <max>${max_range}</max>
+              <resolution>0.001</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>${noise_stddev}</stddev>
+            </noise>
+          </ray>
+          <plugin name="${name}_ros" filename="libgazebo_ros_ray_sensor.so">
+            <ros><remapping>~/out:=${topic}</remapping></ros>
+            <output_type>sensor_msgs/PointCloud2</output_type>
+            <frame_name>${name}</frame_name>
+          </plugin>
+        </sensor>
+      </xacro:if>
+      <xacro:if value="${sensor_backend == 'gpu'}">
+        <!-- Five co-located 90-degree depth views are sampled on the same dome grid. -->
+        <sensor name="${name}_sensor" type="depth">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>${update_rate}</update_rate>
+          <visualize>false</visualize>
+          <camera>
+            <horizontal_fov>${pi / 2}</horizontal_fov>
+            <image>
+              <width>${gpu_resolution}</width><height>${gpu_resolution}</height>
+              <format>R8G8B8</format>
+            </image>
+            <!-- Clip planes use axial depth; min_range below is a radial limit. -->
+            <clip><near>${min_range / sqrt(3)}</near><far>${max_range}</far></clip>
+            <depth_camera><output>depths</output></depth_camera>
+          </camera>
+          <plugin name="${name}_ros" filename="libdome_lidar_gpu.so">
+            <ros><remapping>~/out:=${topic}</remapping></ros>
+            <frame_name>${name}</frame_name>
+            <horizontal_samples>${horizontal_samples}</horizontal_samples>
+            <vertical_samples>${vertical_samples}</vertical_samples>
+            <min_range>${min_range}</min_range><max_range>${max_range}</max_range>
+            <noise_stddev>${noise_stddev}</noise_stddev>
+          </plugin>
+        </sensor>
+      </xacro:if>
+    </gazebo>
+  </xacro:macro>
+</robot>

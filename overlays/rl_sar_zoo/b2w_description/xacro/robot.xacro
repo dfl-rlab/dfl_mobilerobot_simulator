@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- Modified by Dubai Future Labs - DDDMR simulation integration. -->
+
+<robot name="b2w_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find b2w_description)/urdf/b2w_description.urdf"/>
+    <xacro:include filename="$(find b2w_description)/xacro/gazebo.xacro"/>
+    <xacro:include filename="$(find b2w_description)/xacro/velodyne32.xacro"/>
+
+</robot>

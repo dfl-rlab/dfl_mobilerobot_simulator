@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- Modified by Dubai Future Labs - DDDMR simulation integration. -->
+
+<robot name="lite3" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find lite3_description)/urdf/lite3.urdf"/>
+    <xacro:include filename="$(find lite3_description)/xacro/gazebo.xacro"/>
+
+    <xacro:arg name="dome_lidar_enabled" default="true"/>
+    <xacro:arg name="dome_lidar_backend" default="gpu"/>
+    <xacro:arg name="dome_lidar_gpu_resolution" default="512"/>
+    <xacro:arg name="dome_lidar_xyz" default="0.3 0 0.22"/>
+    <xacro:arg name="dome_lidar_rpy" default="0 1.5707963267948966 0"/>
+    <xacro:arg name="dome_lidar_horizontal_samples" default="360"/>
+    <xacro:arg name="dome_lidar_vertical_samples" default="64"/>
+    <xacro:arg name="dome_lidar_update_rate" default="10.0"/>
+    <xacro:arg name="dome_lidar_min_range" default="0.1"/>
+    <xacro:arg name="dome_lidar_max_range" default="60.0"/>
+    <xacro:arg name="dome_lidar_topic" default="/dome_lidar/points"/>
+
+    <xacro:if value="${int(ros_version) == 2}">
+        <xacro:if value="$(arg dome_lidar_enabled)">
+            <xacro:include filename="$(find robot_sensors_description)/xacro/dome_lidar.xacro"/>
+            <xacro:dome_lidar parent="TORSO"
+                backend="$(arg dome_lidar_backend)" gpu_resolution="$(arg dome_lidar_gpu_resolution)"
+                xyz="$(arg dome_lidar_xyz)" rpy="$(arg dome_lidar_rpy)"
+                horizontal_samples="$(arg dome_lidar_horizontal_samples)"
+                vertical_samples="$(arg dome_lidar_vertical_samples)"
+                update_rate="$(arg dome_lidar_update_rate)"
+                min_range="$(arg dome_lidar_min_range)" max_range="$(arg dome_lidar_max_range)"
+                topic="$(arg dome_lidar_topic)"/>
+        </xacro:if>
+    </xacro:if>
+
+</robot>
