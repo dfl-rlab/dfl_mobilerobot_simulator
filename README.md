@@ -10,6 +10,7 @@ contributors, using the pretrained Lite3 HIMLoco policy.
 On a Linux x86-64 host with Docker:
 
 ```bash
+cd ~
 git clone --branch rl_lite3 --recurse-submodules \
   https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git
 cd dfl_mobilerobot_simulator/docker
