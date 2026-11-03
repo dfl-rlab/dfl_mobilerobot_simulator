@@ -10,5 +10,6 @@ Choose a robot below and follow its branch guide to build the Docker image and l
 
 | Robot | Motion Model | Guide | Preview |
 |:------|:-------------|:------|:-------:|
-| Unitree Go2 | Quadruped locomotion | [Go2](https://github.com/dfl-rlab/dfl_mobilerobot_simulator/tree/go2) | <img src="https://github.com/dfl-rlab/dddmr_documentation_materials/blob/main/gazebo_3d_navigation/quad_3d_nav_gz_.gif?raw=true" alt="Go2 navigation in Gazebo" width="240"> |
+| Unitree Go2 | Quadruped (traditional gait) | [Go2](https://github.com/dfl-rlab/dfl_mobilerobot_simulator/tree/go2) | <img src="https://github.com/dfl-rlab/dddmr_documentation_materials/blob/main/gazebo_3d_navigation/quad_3d_nav_gz_.gif?raw=true" alt="Go2 navigation in Gazebo" width="240"> |
+| Deep Robotics Lite3 | Quadruped (RL model) | [Lite3](https://github.com/dfl-rlab/dfl_mobilerobot_simulator/tree/rl_lite3) |  |
 | Saye | Ackermann steering | [Ackermann](https://github.com/dfl-rlab/dfl_mobilerobot_simulator/tree/ackermann) | <img src="https://github.com/dfl-rlab/dddmr_documentation_materials/blob/main/local_planner/trajectory/dddmr_ackermann_gazebo.gif?raw=true" alt="Ackermann navigation in Gazebo" width="240"> |
