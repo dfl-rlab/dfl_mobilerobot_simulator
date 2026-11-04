@@ -9,8 +9,8 @@
     <xacro:arg name="dome_lidar_enabled" default="true"/>
     <xacro:arg name="dome_lidar_backend" default="gpu"/>
     <xacro:arg name="dome_lidar_gpu_resolution" default="512"/>
-    <xacro:arg name="dome_lidar_xyz" default="0.3 0 0.22"/>
-    <xacro:arg name="dome_lidar_rpy" default="0 1.5707963267948966 0"/>
+    <xacro:arg name="dome_lidar_xyz" default="0.32 0 0.10"/>
+    <xacro:arg name="dome_lidar_rpy" default="0 0.7853981633974483 0"/>
     <xacro:arg name="dome_lidar_horizontal_samples" default="360"/>
     <xacro:arg name="dome_lidar_vertical_samples" default="64"/>
     <xacro:arg name="dome_lidar_update_rate" default="10.0"/>
