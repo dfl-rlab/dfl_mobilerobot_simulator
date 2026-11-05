@@ -344,6 +344,160 @@
       </link>
     </model>
 
+    <!-- Shared high ceiling over stairs A/B/C and both elevated platforms.
+         Roof footprint x=[2,16], y=[-2.5,30]; underside z=8.5 m.
+         Four columns at each platform's corners and two at the stair entrance.
+         All surfaces have matching visuals and collisions for both LiDAR backends. -->
+    <model name="staircase_roof">
+      <static>true</static>
+      <link name="roof_link">
+        <visual name="ceiling_v">
+          <pose>9 13.75 8.65 0 0 0</pose>
+          <geometry><box><size>14 32.5 0.30</size></box></geometry>
+          <material>
+            <ambient>0.78 0.76 0.70 1</ambient>
+            <diffuse>0.78 0.76 0.70 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="ceiling_c">
+          <pose>9 13.75 8.65 0 0 0</pose>
+          <geometry><box><size>14 32.5 0.30</size></box></geometry>
+        </collision>
+        <visual name="platform_2f_west_south_column_v">
+          <pose>3.3 5.8 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_2f_west_south_column_c">
+          <pose>3.3 5.8 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_2f_west_north_column_v">
+          <pose>3.3 16.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_2f_west_north_column_c">
+          <pose>3.3 16.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_2f_east_south_column_v">
+          <pose>14.7 5.8 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_2f_east_south_column_c">
+          <pose>14.7 5.8 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_2f_east_north_column_v">
+          <pose>14.7 16.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_2f_east_north_column_c">
+          <pose>14.7 16.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_3f_west_south_column_v">
+          <pose>3.3 21.3 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_3f_west_south_column_c">
+          <pose>3.3 21.3 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_3f_west_north_column_v">
+          <pose>3.3 28.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_3f_west_north_column_c">
+          <pose>3.3 28.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_3f_east_south_column_v">
+          <pose>10.7 21.3 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_3f_east_south_column_c">
+          <pose>10.7 21.3 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="platform_3f_east_north_column_v">
+          <pose>10.7 28.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="platform_3f_east_north_column_c">
+          <pose>10.7 28.7 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="entrance_west_column_v">
+          <pose>2.4 -2.1 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="entrance_west_column_c">
+          <pose>2.4 -2.1 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+        <visual name="entrance_east_column_v">
+          <pose>15.6 -2.1 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+          <material>
+            <ambient>0.62 0.64 0.68 1</ambient>
+            <diffuse>0.62 0.64 0.68 1</diffuse>
+            <specular>0.03 0.03 0.03 1</specular>
+          </material>
+        </visual>
+        <collision name="entrance_east_column_c">
+          <pose>15.6 -2.1 4.25 0 0 0</pose>
+          <geometry><box><size>0.50 0.50 8.50</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+
     <!-- ============================================================
          RUINS ZONE  (hard, x=-3..-12, y=-3..-12)
     ============================================================ -->
