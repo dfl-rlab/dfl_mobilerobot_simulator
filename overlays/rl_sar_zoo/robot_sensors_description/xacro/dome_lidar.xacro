@@ -12,6 +12,7 @@
       topic:='/dome_lidar/points' backend:='cpu' gpu_resolution:=512
       horizontal_samples:=360 vertical_samples:=64 update_rate:=10.0
       min_range:=0.1 max_range:=60.0 noise_stddev:=0.0
+      semantic_config:='$(find robot_sensors_description)/config/semantic_labels.yaml'
       mass:=0.265 visualize:=false">
     <xacro:property name="sensor_backend" value="${['cpu', 'gpu'][['cpu', 'gpu'].index(backend)]}"/>
     <!-- Representative dome housing, not a calibrated Hesai mechanical model. -->
@@ -104,7 +105,7 @@
             <horizontal_fov>${pi / 2}</horizontal_fov>
             <image>
               <width>${gpu_resolution}</width><height>${gpu_resolution}</height>
-              <format>R8G8B8</format>
+              <format>R_FLOAT16</format>
             </image>
             <!-- Clip planes use axial depth; min_range below is a radial limit. -->
             <clip><near>${min_range / sqrt(3)}</near><far>${max_range}</far></clip>
@@ -117,6 +118,7 @@
             <vertical_samples>${vertical_samples}</vertical_samples>
             <min_range>${min_range}</min_range><max_range>${max_range}</max_range>
             <noise_stddev>${noise_stddev}</noise_stddev>
+            <semantic_config>${semantic_config}</semantic_config>
           </plugin>
         </sensor>
       </xacro:if>

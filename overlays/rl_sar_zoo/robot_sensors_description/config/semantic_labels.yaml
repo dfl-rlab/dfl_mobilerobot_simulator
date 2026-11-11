@@ -1,0 +1,18 @@
+# Semantic ground truth in /dome_lidar/points intensity (GPU backend).
+# These IDs are labels, not physical reflectivity. 0 is any unlisted surface.
+# IDs: 0..65534; up to 2049 defined classes (exact internal half-float indices).
+classes:
+  0: other
+  1: stairs
+
+# First matching rule wins. Glob patterns match scoped Gazebo visual names
+# model::link::visual (an optional world:: prefix is removed).
+# Step boxes: 0.15 m rise, 0.30 m tread. Landings are NOT stairs.
+# Add classes and rules here for future people/vehicles; no C++ changes needed.
+rules:
+  # A9 is entirely contained in land1 (same top and bottom planes). Its visible
+  # surface is the landing, so both overlapping visuals must have the same ID.
+  - visual: 'staircase_complex::stairs_link::sA9_v'
+    class_id: 0
+  - visual: 'staircase_complex::stairs_link::s[ABC][0-9]_v'
+    class_id: 1

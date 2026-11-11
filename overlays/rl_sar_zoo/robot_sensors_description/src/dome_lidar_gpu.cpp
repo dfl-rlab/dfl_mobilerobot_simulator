@@ -16,11 +16,12 @@
 #include <vector>
 
 #include "robot_sensors_description/dome_projection.hpp"
+#include "robot_sensors_description/semantic_labels.hpp"
 
 namespace robot_sensors_description
 {
 // One native depth sensor drives all five cube faces. The additional faces are
-// rendered in its depth callback, on Gazebo's rendering thread, from the same
+// rendered in its image callback, on Gazebo's rendering thread, from the same
 // scene and pose. There are no independently timed ROS clouds to stitch together.
 class DomeLidarGpu : public gazebo::SensorPlugin
 {
@@ -28,6 +29,7 @@ public:
   ~DomeLidarGpu() override
   {
     connection_.reset();
+    semantics_.reset();
     if (cameras_[0]) {
       const auto scene = cameras_[0]->GetScene();
       for (std::size_t face = 1; face < cameras_.size(); ++face) {
@@ -82,13 +84,25 @@ public:
       ignition::math::Quaterniond(0, -kPi / 2, 0)};
 
     const auto scene = cameras_[0]->GetScene();
+    const auto semantic_config = sdf->Get<std::string>("semantic_config", "").first;
+    if (!semantic_config.empty()) {
+      try {
+        semantics_ = std::make_unique<SemanticLabels>(
+          semantic_config, parent->ScopedName() + "/semantic", scene->Name());
+        semantics_->Attach(cameras_[0]);
+      } catch (const std::exception & error) {
+        RCLCPP_ERROR(node_->get_logger(), "Semantic setup failed: %s", error.what());
+        semantics_.reset();
+        return;
+      }
+    }
     sdf::ElementPtr camera_sdf(new sdf::Element);
     sdf::initFile("camera.sdf", camera_sdf);
     camera_sdf->GetElement("horizontal_fov")->Set(kPi / 2);
     auto image = camera_sdf->GetElement("image");
     image->GetElement("width")->Set(resolution);
     image->GetElement("height")->Set(resolution);
-    image->GetElement("format")->Set(std::string("R8G8B8"));
+    image->GetElement("format")->Set(std::string("R_FLOAT16"));
     auto clip = camera_sdf->GetElement("clip");
     clip->GetElement("near")->Set(cameras_[0]->NearClip());
     clip->GetElement("far")->Set(cameras_[0]->FarClip());
@@ -101,34 +115,45 @@ public:
       cameras_[face]->Init();
       cameras_[face]->CreateRenderTexture(name + "_image");
       cameras_[face]->CreateDepthTexture(name + "_depth");
+      if (semantics_) {semantics_->Attach(cameras_[face]);}
     }
     const auto qos = node_->get_qos().get_publisher_qos(
       "~/out", rclcpp::SensorDataQoS().reliable());
     publisher_ = node_->create_publisher<sensor_msgs::msg::PointCloud2>("~/out", qos);
-    connection_ = cameras_[0]->ConnectNewDepthFrame(std::bind(
-      &DomeLidarGpu::OnDepthFrame, this, std::placeholders::_1,
+    // DepthCamera emits the depth callback BEFORE reading its ordinary image.
+    // The image callback is later: both depth and semantic image are current.
+    cameras_[0]->SetCaptureData(true);
+    connection_ = cameras_[0]->ConnectNewImageFrame(std::bind(
+      &DomeLidarGpu::OnImageFrame, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3,
       std::placeholders::_4, std::placeholders::_5));
     sensor->SetActive(true);
     RCLCPP_INFO(node_->get_logger(), "GPU dome ready: %u x %u repeat samples, five %u x %u depth faces",
       horizontal, vertical, resolution, resolution);
+    RCLCPP_INFO(node_->get_logger(), "Dome intensity: %s",
+      semantics_ ? "semantic class IDs" : "constant zero (no semantic config)");
   }
 
 private:
-  void OnDepthFrame(const float * depth, unsigned, unsigned, unsigned, const std::string &)
+  void OnImageFrame(const unsigned char * image, unsigned, unsigned, unsigned,
+    const std::string &)
   {
     const auto sensor = sensor_.lock();
+    const auto * depth = cameras_[0]->DepthData();
     if (!sensor || !depth) {return;}
     const auto pose = cameras_[0]->WorldPose();
     std::array<const float *, 5> images{};
+    std::array<const unsigned char *, 5> labels{};
     images[0] = depth;
+    labels[0] = image;
     for (std::size_t face = 1; face < cameras_.size(); ++face) {
       cameras_[face]->SetWorldPose(ignition::math::Pose3d(
         pose.Pos(), pose.Rot() * rotations_[face]));
       cameras_[face]->Render(true);
       cameras_[face]->PostRender();
       images[face] = cameras_[face]->DepthData();
-      if (!images[face]) {return;}
+      labels[face] = cameras_[face]->ImageData();
+      if (!images[face] || (semantics_ && !labels[face])) {return;}
     }
 
     sensor_msgs::msg::PointCloud2 cloud;
@@ -164,7 +189,7 @@ private:
       *x = range * sample.direction[0];
       *y = range * sample.direction[1];
       *z = range * sample.direction[2];
-      *intensity = 0;  // No calibrated material reflectivity model.
+      *intensity = semantics_ ? semantics_->Decode(labels[sample.face], sample.pixel) : 0;
       ++x; ++y; ++z; ++intensity; ++valid;
     }
     // Match the CPU ROS ray plugin: XYZ/intensity, omit invalid/no-hit points.
@@ -177,6 +202,7 @@ private:
   std::array<gazebo::rendering::DepthCameraPtr, 5> cameras_;
   std::array<ignition::math::Quaterniond, 5> rotations_;
   gazebo::event::ConnectionPtr connection_;
+  std::unique_ptr<SemanticLabels> semantics_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr publisher_;
   std::vector<DomeSample> samples_;
   std::string frame_;
