@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fast DDS 2.6 / ROS 2 Humble: large PointCloud2 data on the same host.
+     Both containers must share the host network and /dev/shm (prefer Docker IPC mode host).
+     No active interface whitelist or fixed IP. UDP remains available for discovery/remote peers.
+     Set FASTRTPS_DEFAULT_PROFILES_FILE to this file and RMW_FASTRTPS_USE_QOS_FROM_XML=1.
+     Reliability remains the explicit ROS publisher/subscriber choice.
+-->
+<dds xmlns="http://eprosima.com">
+  <profiles>
+    <transport_descriptors>
+      <transport_descriptor>
+        <transport_id>lidar_shm</transport_id>
+        <type>SHM</type>
+        <!-- 900 x 128 x 16 bytes = 1,843,200 bytes before headers: fits in 2 MiB. -->
+        <maxMessageSize>2097152</maxMessageSize>
+        <!-- 64 MiB per participant, instead of the 512 KiB Fast DDS default. -->
+        <segment_size>67108864</segment_size>
+        <port_queue_capacity>1024</port_queue_capacity>
+      </transport_descriptor>
+      <transport_descriptor>
+        <transport_id>lidar_udp</transport_id>
+        <type>UDPv4</type>
+        <!--
+        <interfaceWhiteList>
+            <address>192.168.0.2</address>
+        </interfaceWhiteList>
+        -->
+        <maxMessageSize>65500</maxMessageSize>
+        <!-- UDP buffers are requests: the OS may cap them. SHM does not use these. -->
+        <sendBufferSize>1048576</sendBufferSize>
+        <receiveBufferSize>1048576</receiveBufferSize>
+      </transport_descriptor>
+    </transport_descriptors>
+    <participant profile_name="lidar_participant" is_default_profile="true">
+      <rtps>
+        <useBuiltinTransports>false</useBuiltinTransports>
+        <userTransports>
+          <transport_id>lidar_shm</transport_id>
+          <transport_id>lidar_udp</transport_id>
+        </userTransports>
+      </rtps>
+    </participant>
+    <publisher profile_name="lidar_publisher" is_default_profile="true">
+      <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+      <qos>
+        <!-- Preserve synchronous publication for control topics and services. -->
+        <publishMode><kind>SYNCHRONOUS</kind></publishMode>
+        <!-- Data-sharing delivery is separate from SHM transport; SHM stays enabled. -->
+        <data_sharing><kind>OFF</kind></data_sharing>
+      </qos>
+    </publisher>
+    <!-- Only the remapped LiDAR ROS topic publishes asynchronously.
+         If the point-cloud topic is renamed, update this fully qualified name.
+    -->
+    <publisher profile_name="/dome_lidar/points">
+      <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+      <qos>
+        <publishMode><kind>ASYNCHRONOUS</kind></publishMode>
+        <data_sharing><kind>OFF</kind></data_sharing>
+      </qos>
+    </publisher>
+    <subscriber profile_name="lidar_subscriber" is_default_profile="true">
+      <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+      <qos><data_sharing><kind>OFF</kind></data_sharing></qos>
+    </subscriber>
+  </profiles>
+</dds>

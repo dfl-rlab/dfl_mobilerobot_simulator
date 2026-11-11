@@ -33,6 +33,10 @@ Run from the same `docker/` directory on a graphical desktop:
 ./rl_lite3_cpu.bash
 ```
 
+Both launchers automatically load the included Fast DDS profile, which increases
+shared memory capacity and tunes transport settings to optimize dome LiDAR data
+transfer during simulation. No additional configuration is required.
+
 Both scripts use the same image and start Lite3, Gazebo, the policy controller,
 dome LiDAR and odometry. They select GPU rendering or CPU ray casting for the
 LiDAR. GPU mode uses a 900 x 128 scan; CPU mode uses a reduced 360 x 64 scan
