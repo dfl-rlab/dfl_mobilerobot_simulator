@@ -11,7 +11,7 @@ On a Linux x86-64 host with Docker:
 
 ```bash
 cd ~
-git clone --branch rl_lite3 --recurse-submodules \
+git clone --branch rl_lite3_optimize --recurse-submodules \
   https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git
 cd dfl_mobilerobot_simulator/docker
 docker build -t dddmr_simulation:rl_lite3 -f Dockerfile ..
