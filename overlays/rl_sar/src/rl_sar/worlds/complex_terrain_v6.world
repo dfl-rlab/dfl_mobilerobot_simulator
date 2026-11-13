@@ -75,7 +75,8 @@
     <!-- Staircases and landings.
          Steps have a 0.30 m tread depth and a 0.15 m rise.
          Staircase A : +X dir, width 3m (y=[-1.5,+1.5])
-         steps x= 3.15..5.85,  z_top = 0.15..1.50m
+         steps x= 2.65..5.35,  z_top = 0.15..1.50m
+         Last tread ends at x=5.5, flush with landing 1 without overlap.
          Landing 1   : center (7,0,1.425)  size 3 x 3 x 0.15
          x=[5.5,8.5]  y=[-1.5,+1.5]  z_top=1.50m
          Staircase B : +Y dir, width 3m (x=[5.5,8.5])
@@ -92,31 +93,27 @@
       <static>true</static>
       <link name="stairs_link">
 
-        <!-- Staircase A: 3 m wide along Y, ascending along +X. -->
-        <visual name="sA0_v"><pose>3.15 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA0_c"><pose>3.15 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA1_v"><pose>3.45 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA1_c"><pose>3.45 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA2_v"><pose>3.75 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA2_c"><pose>3.75 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA3_v"><pose>4.05 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA3_c"><pose>4.05 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA4_v"><pose>4.35 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA4_c"><pose>4.35 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA5_v"><pose>4.65 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA5_c"><pose>4.65 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA6_v"><pose>4.95 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA6_c"><pose>4.95 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA7_v"><pose>5.25 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA7_c"><pose>5.25 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA8_v"><pose>5.55 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
-        <collision name="sA8_c"><pose>5.55 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA9_sides_bottom_v"><pose>5.85 0 1.425 0 0 0</pose><geometry><mesh><uri>model://robot_sensors_description/meshes/box_sides_bottom.dae</uri><scale>0.30 3.0 0.15</scale></mesh></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material></visual>
-        <visual name="sA9_v"><pose>5.85 0 1.425 0 0 0</pose>
-          <geometry><mesh><uri>model://robot_sensors_description/meshes/box_top.dae</uri><scale>0.30 3.0 0.15</scale></mesh></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <collision name="sA9_c"><pose>5.85 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <!-- Staircase A: x=[2.5,5.5], 3 m wide along Y, ascending along +X. -->
+        <visual name="sA0_v"><pose>2.65 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA0_c"><pose>2.65 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA1_v"><pose>2.95 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA1_c"><pose>2.95 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA2_v"><pose>3.25 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA2_c"><pose>3.25 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA3_v"><pose>3.55 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA3_c"><pose>3.55 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA4_v"><pose>3.85 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA4_c"><pose>3.85 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA5_v"><pose>4.15 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA5_c"><pose>4.15 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA6_v"><pose>4.45 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA6_c"><pose>4.45 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA7_v"><pose>4.75 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA7_c"><pose>4.75 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA8_v"><pose>5.05 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA8_c"><pose>5.05 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA9_v"><pose>5.35 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA9_c"><pose>5.35 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
 
         <!-- Landing 1: 3 x 3 m, with its upper surface at z=1.5 m. -->
         <visual name="land1_sides_bottom_v"><pose>7.0 0 1.425 0 0 0</pose>
@@ -201,7 +198,7 @@
     </model>
 
     <!-- Walls along the right side of the staircases.
-         South wall:  y=-1.60, x=[3.0, 8.5]  h=3.0m
+         South wall:  y=-1.60, x=[2.5, 8.5]  h=3.0m
          East wall:   x= 8.60, y=[-1.5, 4.5] h=4.5m
          Corner fill: (8.60, -1.60)           h=4.5m -->
     <model name="staircase_walls">
@@ -209,15 +206,15 @@
       <link name="walls_link">
 
         <!-- South wall along staircase A and the south edge of landing 1. -->
-        <!-- Inner face y=-1.5, outer face y=-1.7, x=[3.0,8.5]; length 5.5 m. -->
+        <!-- Inner face y=-1.5, outer face y=-1.7, x=[2.5,8.5]; length 6.0 m. -->
         <visual name="sw_south_v">
-          <pose>5.75 -1.60 1.50 0 0 0</pose>
-          <geometry><box><size>5.5 0.20 3.00</size></box></geometry>
+          <pose>5.50 -1.60 1.50 0 0 0</pose>
+          <geometry><box><size>6.0 0.20 3.00</size></box></geometry>
           <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.55 0.55 0.60 1</ambient></material>
         </visual>
         <collision name="sw_south_c">
-          <pose>5.75 -1.60 1.50 0 0 0</pose>
-          <geometry><box><size>5.5 0.20 3.00</size></box></geometry>
+          <pose>5.50 -1.60 1.50 0 0 0</pose>
+          <geometry><box><size>6.0 0.20 3.00</size></box></geometry>
         </collision>
 
         <!-- East wall along landing 1 and staircase B. -->
