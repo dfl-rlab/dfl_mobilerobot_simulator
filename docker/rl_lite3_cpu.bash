@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Prefer the GPU launcher when available; CPU ray casting is much slower.
+# Software rendering fallback; prefer the GPU launcher for full-resolution LiDAR.
 set -euo pipefail
 : "${DISPLAY:?Run this script from a graphical desktop.}"
 xauth_file="${XAUTHORITY:-$HOME/.Xauthority}"
@@ -20,12 +20,12 @@ rtps_args=(-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp
     -v "$rtps_profile:/opt/dfl/rtps_profile.xml:ro")
 
 exec docker run --rm -it --init --network host --ipc host \
-    --name "${SIM_CONTAINER:-rl_lite3}" \
-    -e DISPLAY -e QT_X11_NO_MITSHM=1 -e ROS_DOMAIN_ID=22 \
+    --name "${SIM_CONTAINER:-rl_lite3_jazzy}" \
+    -e DISPLAY -e QT_X11_NO_MITSHM=1 -e ROS_DOMAIN_ID="${SIM_ROS_DOMAIN_ID:-23}" -e GZ_PARTITION="${SIM_GZ_PARTITION:-rl_lite3_jazzy}" \
     -e XAUTHORITY=/tmp/dfl.xauth \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
     -v "$xauth_file:/tmp/dfl.xauth:ro" \
     "${graphics[@]}" \
     "${rtps_args[@]}" \
-    "${SIM_IMAGE:-dddmr_simulation:rl_lite3}" \
+    "${SIM_IMAGE:-dddmr_simulation:rl_lite3_jazzy}" \
     python3 /opt/dfl/scripts/run_simulation.py --backend cpu "$@"

@@ -1,0 +1,10 @@
+controller_manager:
+    ros__parameters:
+        update_rate: 800  # Match the 1.25 ms DART physics step.
+        use_sim_time: true
+
+        joint_state_broadcaster:
+            type: joint_state_broadcaster/JointStateBroadcaster
+
+        robot_joint_controller:
+            type: robot_joint_controller/RobotJointControllerGroup

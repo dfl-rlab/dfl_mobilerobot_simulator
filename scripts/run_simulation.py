@@ -47,6 +47,7 @@ def run(args, mappings):
     if args.backend == 'cpu':
         mappings.setdefault('dome_lidar_horizontal_samples', '360')
         mappings.setdefault('dome_lidar_vertical_samples', '64')
+        mappings.setdefault('dome_lidar_gpu_resolution', '512')
     launch_args = [f'{name}:={value}' for name, value in mappings.items()]
 
     import rclpy
@@ -57,7 +58,7 @@ def run(args, mappings):
     from rclpy.qos import qos_profile_sensor_data
     from rclpy.signals import SignalHandlerOptions
 
-    log_dir = Path(os.environ.get('SIM_LOG_DIR', '/tmp/rl_lite3'))
+    log_dir = Path(os.environ.get('SIM_LOG_DIR', '/tmp/rl_lite3_jazzy'))
     log_dir.mkdir(parents=True, exist_ok=True)
     children = []
     logs = []

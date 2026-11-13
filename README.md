@@ -1,6 +1,6 @@
 # rl_lite3
 
-A ROS 2 Humble / Gazebo Classic simulator with a **Lite3 RL locomotion policy**,
+A ROS 2 Jazzy / Gazebo Harmonic simulator with a **Lite3 RL locomotion policy**,
 **dome LiDAR**, odometry and a multi-level terrain. Built on
 [rl_sar](https://github.com/fan-ziqi/rl_sar) by **Ziqi Fan (fan-ziqi)** and its
 contributors, using the pretrained Lite3 HIMLoco policy.
@@ -11,17 +11,17 @@ On a Linux x86-64 host with Docker:
 
 ```bash
 cd ~
-git clone --branch rl_lite3_optimize --recurse-submodules \
+git clone --branch rl_lite3_jazzy --recurse-submodules \
   https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git
 cd dfl_mobilerobot_simulator/docker
-docker build -t dddmr_simulation:rl_lite3 -f Dockerfile ..
+docker build -t dddmr_simulation:rl_lite3_jazzy -f Dockerfile ..
 ```
 
 The Docker image includes the complete simulation workspace.
 
 ## Start Gazebo
 
-**Prefer GPU mode when a GPU is available; CPU ray casting runs much slower.**
+**Prefer GPU mode when a GPU is available; CPU software rendering runs slower.**
 
 Run from the same `docker/` directory on a graphical desktop:
 
@@ -29,7 +29,7 @@ Run from the same `docker/` directory on a graphical desktop:
 # Recommended when a GPU is available (NVIDIA requires NVIDIA Container Toolkit).
 ./rl_lite3_gpu.bash
 
-# CPU ray casting, without GPU access.
+# CPU software rendering, without GPU access.
 ./rl_lite3_cpu.bash
 ```
 
@@ -38,12 +38,12 @@ shared memory capacity and tunes transport settings to optimize dome LiDAR data
 transfer during simulation. No additional configuration is required.
 
 Both scripts use the same image and start Lite3, Gazebo, the policy controller,
-dome LiDAR and odometry. They select GPU rendering or CPU ray casting for the
+dome LiDAR and odometry. They select GPU rendering or CPU software rendering for the
 LiDAR. GPU mode uses a 900 x 128 scan; CPU mode uses a reduced 360 x 64 scan
-but still runs much slower. Use GPU mode whenever possible.
+but still runs slower. Use GPU mode whenever possible.
 
-Both launchers always use `ROS_DOMAIN_ID=22`, regardless of the host terminal
-environment. The image also defaults to domain `22`.
+Both launchers and the image default to `ROS_DOMAIN_ID=23`.
+Set `SIM_ROS_DOMAIN_ID` to override the launcher default.
 
 After the robot drops onto the ground, keep this terminal focused: press `r`, wait 1 second, press `0`, wait 1 second, press `1`, wait 1 second, then press `n`.
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Fast DDS 2.6 / ROS 2 Humble: large PointCloud2 data on the same host.
+<!-- Fast DDS profile for large PointCloud2 data on the same host.
      Both containers must share the host network and /dev/shm (prefer Docker IPC mode host).
      No active interface whitelist or fixed IP. UDP remains available for discovery/remote peers.
      Set FASTRTPS_DEFAULT_PROFILES_FILE to this file and RMW_FASTRTPS_USE_QOS_FROM_XML=1.

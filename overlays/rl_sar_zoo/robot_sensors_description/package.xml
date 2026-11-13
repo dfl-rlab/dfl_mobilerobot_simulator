@@ -2,22 +2,20 @@
 <package format="3">
   <name>robot_sensors_description</name>
   <version>0.1.0</version>
-  <description>Reusable sensor descriptions for ROS 2 and Gazebo Classic.</description>
+  <description>Reusable sensor descriptions for ROS 2 and Gazebo Harmonic.</description>
   <maintainer email="fanziqi614@gmail.com">rl_sar contributors</maintainer>
   <license>Apache-2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <build_depend>gazebo_dev</build_depend>
-  <depend>gazebo_ros</depend>
+  <depend>gz_sim_vendor</depend>
+  <depend>gz_transport_vendor</depend>
+  <depend>gz_rendering_vendor</depend>
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
   <depend>yaml-cpp</depend>
   <exec_depend>xacro</exec_depend>
-  <exec_depend>gazebo_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <export>
     <build_type>ament_cmake</build_type>
-    <!-- gazebo_ros expands prefix to share/robot_sensors_description. -->
-    <gazebo_ros plugin_path="${prefix}/../../lib"/>
   </export>
 </package>

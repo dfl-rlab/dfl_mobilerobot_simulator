@@ -1,6 +1,6 @@
 # The GPU backend writes semantic class IDs to /dome_lidar/points intensity.
 # These values represent classes rather than reflectivity. Unmatched visuals use 0.
-# IDs range from 0 to 65534, with at most 2049 classes in the lookup table.
+# IDs range from 0 to 65534, with class 0 reserved for unmatched visuals.
 classes:
   0: other
   1: stairs
@@ -13,10 +13,6 @@ classes:
 # Separate *_sides_bottom_v visuals remain class 0.
 # Additional object types can be assigned classes by adding matching rules.
 rules:
-  # Step A9 overlaps landing 1 at the same height. Assign both upper surfaces
-  # to class 2. This exception must precede the general staircase rule.
-  - visual: 'staircase_complex::stairs_link::sA9_v'
-    class_id: 2
   - visual: 'staircase_complex::stairs_link::s[ABC][0-9]_v'
     class_id: 1
 
