@@ -55,8 +55,9 @@ public:
       scheme_ + "/fragment", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
       "glsl", Ogre::GPT_FRAGMENT_PROGRAM);
     fragment_->setSource(
-      "#version 120\nuniform vec4 labelColour;\n"
-      "void main() { gl_FragColor = labelColour; }\n");
+      "#version 120\nuniform vec4 labelColour;\nuniform float inverseFarClip;\n"
+      "void main() { gl_FragColor = labelColour; "
+      "gl_FragDepth = inverseFarClip / gl_FragCoord.w; }\n");
     fragment_->load();
     // Half floats store table indices 0..2048 exactly. The lookup table preserves
     // arbitrary external IDs while halving label readback; depth stays float32.
@@ -113,6 +114,12 @@ public:
       texture->setFSAA(0, "");
       texture->createInternalResources();
       camera->SetRenderTarget(texture->getBuffer()->getRenderTarget());
+    }
+    // Use linear eye-space depth for label visibility to preserve precision
+    // where distant floors and steps meet. The sensor depth texture is unchanged.
+    for (const auto & entry : materials_) {
+      entry.second->getTechnique(0)->getPass(0)->getFragmentProgramParameters()->
+        setNamedConstant("inverseFarClip", static_cast<float>(1.0 / camera->FarClip()));
     }
     auto * viewport = camera->OgreViewport();
     viewport->setMaterialScheme(scheme_);

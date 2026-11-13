@@ -1,18 +1,30 @@
-# Semantic ground truth in /dome_lidar/points intensity (GPU backend).
-# These IDs are labels, not physical reflectivity. 0 is any unlisted surface.
-# IDs: 0..65534; up to 2049 defined classes (exact internal half-float indices).
+# The GPU backend writes semantic class IDs to /dome_lidar/points intensity.
+# These values represent classes rather than reflectivity. Unmatched visuals use 0.
+# IDs range from 0 to 65534, with at most 2049 classes in the lookup table.
 classes:
   0: other
   1: stairs
+  2: floor
 
 # First matching rule wins. Glob patterns match scoped Gazebo visual names
 # model::link::visual (an optional world:: prefix is removed).
-# Step boxes: 0.15 m rise, 0.30 m tread. Landings are NOT stairs.
-# Add classes and rules here for future people/vehicles; no C++ changes needed.
+# Step boxes: 0.15 m rise, 0.30 m tread.
+# Floor rules match visuals containing only upper surfaces.
+# Separate *_sides_bottom_v visuals remain class 0.
+# Additional object types can be assigned classes by adding matching rules.
 rules:
-  # A9 is entirely contained in land1 (same top and bottom planes). Its visible
-  # surface is the landing, so both overlapping visuals must have the same ID.
+  # Step A9 overlaps landing 1 at the same height. Assign both upper surfaces
+  # to class 2. This exception must precede the general staircase rule.
   - visual: 'staircase_complex::stairs_link::sA9_v'
-    class_id: 0
+    class_id: 2
   - visual: 'staircase_complex::stairs_link::s[ABC][0-9]_v'
     class_id: 1
+
+  - visual: 'custom_ground::ground_link::ground_v'
+    class_id: 2
+  - visual: 'staircase_complex::stairs_link::land[123]_v'
+    class_id: 2
+  - visual: 'top_platform_2f::top_link::tp_floor_v'
+    class_id: 2
+  - visual: 'top_platform_3f::top3_link::tp3_floor_v'
+    class_id: 2

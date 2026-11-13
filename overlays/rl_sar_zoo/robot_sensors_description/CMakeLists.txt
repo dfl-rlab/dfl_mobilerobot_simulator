@@ -16,7 +16,9 @@ target_include_directories(dome_lidar_gpu SYSTEM PRIVATE ${GAZEBO_INCLUDE_DIRS})
 target_link_libraries(dome_lidar_gpu ${GAZEBO_LIBRARIES} yaml-cpp)
 ament_target_dependencies(dome_lidar_gpu gazebo_ros rclcpp sensor_msgs)
 install(TARGETS dome_lidar_gpu LIBRARY DESTINATION lib)
-ament_environment_hooks(env-hooks/gazebo_plugin_path.dsv.in)
+ament_environment_hooks(
+  env-hooks/gazebo_plugin_path.dsv.in
+  env-hooks/gazebo_model_path.dsv.in)
 
-install(DIRECTORY xacro rviz config DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY xacro rviz config meshes DESTINATION share/${PROJECT_NAME})
 ament_package()

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <!-- Upper face of the Gazebo unit box.
+         The world scales this mesh to the original box dimensions. -->
+    <asset>
+        <unit meter="1" name="meter" />
+        <up_axis>Z_UP</up_axis>
+    </asset>
+    <library_geometries>
+        <geometry id="mesh_0">
+            <mesh>
+                <source id="mesh_0-Positions" name="mesh_0-Positions">
+                    <float_array count="72" id="mesh_0-Positions-array">0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 -0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 0.50000000 -0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 -0.50000000 0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 0.50000000 0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 -0.50000000 -0.50000000 -0.50000000 -0.50000000 -0.50000000 -0.50000000 0.50000000 -0.50000000 0.50000000 0.50000000 -0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 0.50000000 0.50000000 0.50000000 -0.50000000 0.50000000 0.50000000 -0.50000000 -0.50000000 0.50000000 0.50000000 -0.50000000 </float_array>
+                    <technique_common>
+                        <accessor count="24" source="#mesh_0-Positions-array" stride="3">
+                            <param type="float" name="X" />
+                            <param type="float" name="Y" />
+                            <param type="float" name="Z" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="mesh_0-Normals" name="mesh_0-Normals">
+                    <float_array count="72" id="mesh_0-Normals-array">0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 0.00000000 0.00000000 -1.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 0.00000000 </float_array>
+                    <technique_common>
+                        <accessor count="24" source="#mesh_0-Normals-array" stride="3">
+                            <param type="float" name="X" />
+                            <param type="float" name="Y" />
+                            <param type="float" name="Z" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="mesh_0-UVMap" name="mesh_0-UVMap">
+                    <float_array count="48" id="mesh_0-UVMap-array">1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 1.00000000 1.00000000 0.00000000 1.00000000 0.00000000 0.00000000 1.00000000 0.00000000 </float_array>
+                    <technique_common>
+                        <accessor count="24" source="#mesh_0-UVMap-array" stride="2">
+                            <param type="float" name="U" />
+                            <param type="float" name="V" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="mesh_0-Vertex" name="mesh_0-Vertex">
+                    <input semantic="POSITION" source="#mesh_0-Positions" />
+                </vertices>
+                <triangles count="2">
+                    <input offset="0" semantic="VERTEX" source="#mesh_0-Vertex" />
+                    <input offset="1" semantic="NORMAL" source="#mesh_0-Normals" />
+                    <input offset="2" semantic="TEXCOORD" source="#mesh_0-UVMap" />
+                    <p>11 11 11 8 8 8 9 9 9 9 9 9 10 10 10 11 11 11</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene name="Scene" id="Scene">
+            <node name="node" id="node">
+                <instance_geometry url="#mesh_0" />
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#Scene" />
+    </scene>
+</COLLADA>
