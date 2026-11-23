@@ -11,9 +11,11 @@ On a Linux x86-64 host with Docker:
 
 ```bash
 cd ~
-git clone --branch rl_lite3 --recurse-submodules \
+git clone --branch rl_lite3 \
   https://github.com/dfl-rlab/dfl_mobilerobot_simulator.git
-cd dfl_mobilerobot_simulator/docker
+cd dfl_mobilerobot_simulator
+git submodule update --init --recursive
+cd docker
 docker build -t dddmr_simulation:rl_lite3 -f Dockerfile ..
 ```
 
@@ -32,6 +34,10 @@ Run from the same `docker/` directory on a graphical desktop:
 # CPU ray casting, without GPU access.
 ./rl_lite3_cpu.bash
 ```
+
+Both launchers automatically load the included Fast DDS profile, which increases
+shared memory capacity and tunes transport settings to improve dome LiDAR data
+transfer during simulation. No additional configuration is required.
 
 Both scripts use the same image and start Lite3, Gazebo, the policy controller,
 dome LiDAR and odometry. They select GPU rendering or CPU ray casting for the

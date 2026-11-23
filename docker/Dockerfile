@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /ws_rl
 COPY upstream/rl_sar/ /ws_rl/src/rl_sar/
 COPY upstream/rl_sar_zoo/ /ws_rl/src/rl_sar_zoo/
-RUN bash src/rl_sar/scripts/download_inference_runtime.sh
+RUN bash src/rl_sar/scripts/download_inference_runtime.sh libtorch
 COPY overlays/ /opt/dfl/overlays/
 COPY scripts/apply_overlays.bash /opt/dfl/scripts/apply_overlays.bash
 RUN bash /opt/dfl/scripts/apply_overlays.bash /ws_rl

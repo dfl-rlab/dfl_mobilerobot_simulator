@@ -51,10 +51,38 @@
     <model name="custom_ground">
       <static>true</static>
       <link name="ground_link">
-        <visual name="ground_v">
-          <pose>0 0 -0.05 0 0 0</pose>
-          <geometry><box><size>100 80 0.10</size></box></geometry>
-          <material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="ground_v"><pose>0 0 0 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>100 80</size></plane></geometry><material>
+            <ambient>0.58 0.56 0.52 1</ambient>
+            <diffuse>0.58 0.56 0.52 1</diffuse>
+            <specular>0 0 0 1</specular>
+          </material>
+        </visual>
+        <visual name="ground_bottom_v"><pose>0 0 -0.1 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>100 80</size></plane></geometry><material>
+            <ambient>0.45 0.45 0.48 1</ambient>
+            <diffuse>0.45 0.45 0.48 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <visual name="ground_east_v"><pose>50 0 -0.05 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.1 80</size></plane></geometry><material>
+            <ambient>0.45 0.45 0.48 1</ambient>
+            <diffuse>0.45 0.45 0.48 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <visual name="ground_west_v"><pose>-50 0 -0.05 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.1 80</size></plane></geometry><material>
+            <ambient>0.45 0.45 0.48 1</ambient>
+            <diffuse>0.45 0.45 0.48 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <visual name="ground_north_v"><pose>0 40 -0.05 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>100 0.1</size></plane></geometry><material>
+            <ambient>0.45 0.45 0.48 1</ambient>
+            <diffuse>0.45 0.45 0.48 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <visual name="ground_south_v"><pose>0 -40 -0.05 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>100 0.1</size></plane></geometry><material>
             <ambient>0.45 0.45 0.48 1</ambient>
             <diffuse>0.45 0.45 0.48 1</diffuse>
             <specular>0.02 0.02 0.02 1</specular>
@@ -80,7 +108,7 @@
          Geometry summary (all stairs: step depth=0.30m, rise=0.15m)
 
          Staircase A : +X dir, width 3m (y=[-1.5,+1.5])
-                       steps x= 3.15..5.85,  z_top = 0.15..1.50m
+                       steps x= 2.65..5.35,  z_top = 0.15..1.50m
          Landing 1   : center (7,0,1.425)  size 3×3×0.15
                        x=[5.5,8.5]  y=[-1.5,+1.5]  z_top=1.50m
          Staircase B : +Y dir, width 3m (x=[5.5,8.5])
@@ -100,91 +128,118 @@
       <link name="stairs_link">
 
         <!-- ── STAIRCASE A (3m wide in Y) ─────────────────────── -->
-        <visual name="sA0_v"><pose>3.15 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA0_c"><pose>3.15 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA1_v"><pose>3.45 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA1_c"><pose>3.45 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA2_v"><pose>3.75 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA2_c"><pose>3.75 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA3_v"><pose>4.05 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA3_c"><pose>4.05 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA4_v"><pose>4.35 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA4_c"><pose>4.35 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA5_v"><pose>4.65 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA5_c"><pose>4.65 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA6_v"><pose>4.95 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA6_c"><pose>4.95 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA7_v"><pose>5.25 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA7_c"><pose>5.25 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA8_v"><pose>5.55 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA8_c"><pose>5.55 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
-        <visual name="sA9_v"><pose>5.85 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
-        <collision name="sA9_c"><pose>5.85 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA0_v"><pose>2.65 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA0_c"><pose>2.65 0 0.075 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA1_v"><pose>2.95 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA1_c"><pose>2.95 0 0.225 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA2_v"><pose>3.25 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA2_c"><pose>3.25 0 0.375 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA3_v"><pose>3.55 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA3_c"><pose>3.55 0 0.525 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA4_v"><pose>3.85 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA4_c"><pose>3.85 0 0.675 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA5_v"><pose>4.15 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA5_c"><pose>4.15 0 0.825 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA6_v"><pose>4.45 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA6_c"><pose>4.45 0 0.975 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA7_v"><pose>4.75 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA7_c"><pose>4.75 0 1.125 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA8_v"><pose>5.05 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA8_c"><pose>5.05 0 1.275 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
+        <visual name="sA9_v"><pose>5.35 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
+        <collision name="sA9_c"><pose>5.35 0 1.425 0 0 0</pose><geometry><box><size>0.30 3.0 0.15</size></box></geometry></collision>
 
         <!-- ── LANDING 1  (3×3m, z=1.5m) ─────────────────────── -->
-        <visual name="land1_v"><pose>7.0 0 1.425 0 0 0</pose>
-          <geometry><box><size>3.0 3.0 0.15</size></box></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="land1_v"><pose>7 0 1.5 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 3</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <visual name="land1_bottom_v"><pose>7 0 1.35 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 3</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
+        </visual>
+        <visual name="land1_east_v"><pose>8.5 0 1.425 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 3</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
+        </visual>
+        <visual name="land1_west_v"><pose>5.5 0 1.425 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 3</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
+        </visual>
+        <visual name="land1_north_v"><pose>7 1.5 1.425 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
+        </visual>
+        <visual name="land1_south_v"><pose>7 -1.5 1.425 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.70 0.70 0.75 1</ambient></material>
         </visual>
         <collision name="land1_c"><pose>7.0 0 1.425 0 0 0</pose><geometry><box><size>3.0 3.0 0.15</size></box></geometry></collision>
 
         <!-- ── STAIRCASE B (3m wide in X, +Y dir) ────────────── -->
         <!-- starts at y=1.65 (after landing1 north edge at y=1.5) -->
-        <visual name="sB0_v"><pose>7.0 1.65 1.575 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB0_v"><pose>7.0 1.65 1.575 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB0_c"><pose>7.0 1.65 1.575 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB1_v"><pose>7.0 1.95 1.725 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB1_v"><pose>7.0 1.95 1.725 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB1_c"><pose>7.0 1.95 1.725 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB2_v"><pose>7.0 2.25 1.875 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB2_v"><pose>7.0 2.25 1.875 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB2_c"><pose>7.0 2.25 1.875 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB3_v"><pose>7.0 2.55 2.025 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB3_v"><pose>7.0 2.55 2.025 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB3_c"><pose>7.0 2.55 2.025 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB4_v"><pose>7.0 2.85 2.175 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB4_v"><pose>7.0 2.85 2.175 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB4_c"><pose>7.0 2.85 2.175 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB5_v"><pose>7.0 3.15 2.325 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB5_v"><pose>7.0 3.15 2.325 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB5_c"><pose>7.0 3.15 2.325 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB6_v"><pose>7.0 3.45 2.475 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB6_v"><pose>7.0 3.45 2.475 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB6_c"><pose>7.0 3.45 2.475 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB7_v"><pose>7.0 3.75 2.625 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB7_v"><pose>7.0 3.75 2.625 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB7_c"><pose>7.0 3.75 2.625 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB8_v"><pose>7.0 4.05 2.775 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB8_v"><pose>7.0 4.05 2.775 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB8_c"><pose>7.0 4.05 2.775 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sB9_v"><pose>7.0 4.35 2.925 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.85 0.85 0.85 1</ambient></material></visual>
+        <visual name="sB9_v"><pose>7.0 4.35 2.925 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sB9_c"><pose>7.0 4.35 2.925 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
 
         <!-- ── LANDING 2  (3×1m, z=3.0m, y=[4.5,5.5]) ─────────── -->
-        <visual name="land2_v"><pose>7.0 5.0 2.925 0 0 0</pose>
-          <geometry><box><size>3.0 1.0 0.15</size></box></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="land2_v"><pose>7 5 3 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <visual name="land2_bottom_v"><pose>7 5 2.85 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
+        </visual>
+        <visual name="land2_east_v"><pose>8.5 5 2.925 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
+        </visual>
+        <visual name="land2_west_v"><pose>5.5 5 2.925 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
+        </visual>
+        <visual name="land2_north_v"><pose>7 5.5 2.925 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
+        </visual>
+        <visual name="land2_south_v"><pose>7 4.5 2.925 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.65 0.65 0.72 1</ambient></material>
         </visual>
         <collision name="land2_c"><pose>7.0 5.0 2.925 0 0 0</pose><geometry><box><size>3.0 1.0 0.15</size></box></geometry></collision>
 
         <!-- ── STAIRCASE C  (3rd floor, +Y from y=17, z=3→4.5m) ─ -->
         <!-- entry is from the back of the 2nd floor top platform   -->
-        <visual name="sC0_v"><pose>7.0 17.15 3.075 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC0_v"><pose>7.0 17.15 3.075 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC0_c"><pose>7.0 17.15 3.075 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC1_v"><pose>7.0 17.45 3.225 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC1_v"><pose>7.0 17.45 3.225 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC1_c"><pose>7.0 17.45 3.225 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC2_v"><pose>7.0 17.75 3.375 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC2_v"><pose>7.0 17.75 3.375 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC2_c"><pose>7.0 17.75 3.375 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC3_v"><pose>7.0 18.05 3.525 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC3_v"><pose>7.0 18.05 3.525 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC3_c"><pose>7.0 18.05 3.525 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC4_v"><pose>7.0 18.35 3.675 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC4_v"><pose>7.0 18.35 3.675 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC4_c"><pose>7.0 18.35 3.675 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC5_v"><pose>7.0 18.65 3.825 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC5_v"><pose>7.0 18.65 3.825 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC5_c"><pose>7.0 18.65 3.825 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC6_v"><pose>7.0 18.95 3.975 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC6_v"><pose>7.0 18.95 3.975 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC6_c"><pose>7.0 18.95 3.975 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC7_v"><pose>7.0 19.25 4.125 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC7_v"><pose>7.0 19.25 4.125 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC7_c"><pose>7.0 19.25 4.125 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC8_v"><pose>7.0 19.55 4.275 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC8_v"><pose>7.0 19.55 4.275 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC8_c"><pose>7.0 19.55 4.275 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
-        <visual name="sC9_v"><pose>7.0 19.85 4.425 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.83 0.83 0.83 1</ambient></material></visual>
+        <visual name="sC9_v"><pose>7.0 19.85 4.425 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry><material><ambient>1 0.32 0.02 1</ambient><diffuse>1 0.32 0.02 1</diffuse></material></visual>
         <collision name="sC9_c"><pose>7.0 19.85 4.425 0 0 0</pose><geometry><box><size>3.0 0.30 0.15</size></box></geometry></collision>
 
         <!-- ── LANDING 3  (3×1m, z=4.5m, y=[20,21]) ─────────── -->
-        <visual name="land3_v"><pose>7.0 20.5 4.425 0 0 0</pose>
-          <geometry><box><size>3.0 1.0 0.15</size></box></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="land3_v"><pose>7 20.5 4.5 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <visual name="land3_bottom_v"><pose>7 20.5 4.35 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
+        </visual>
+        <visual name="land3_east_v"><pose>8.5 20.5 4.425 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
+        </visual>
+        <visual name="land3_west_v"><pose>5.5 20.5 4.425 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 1</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
+        </visual>
+        <visual name="land3_north_v"><pose>7 21 4.425 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
+        </visual>
+        <visual name="land3_south_v"><pose>7 20 4.425 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>3 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.70 1</ambient></material>
         </visual>
         <collision name="land3_c"><pose>7.0 20.5 4.425 0 0 0</pose><geometry><box><size>3.0 1.0 0.15</size></box></geometry></collision>
 
@@ -204,15 +259,15 @@
       <link name="walls_link">
 
         <!-- South wall: right of A + south edge of Landing1        -->
-        <!-- inner face y=-1.5, outer y=-1.7, x=3.0→8.5 (len 5.5m) -->
+        <!-- inner face y=-1.5, outer y=-1.7, x=2.5→8.5 (len 6.0m) -->
         <visual name="sw_south_v">
-          <pose>5.75 -1.60 1.50 0 0 0</pose>
-          <geometry><box><size>5.5 0.20 3.00</size></box></geometry>
+          <pose>5.50 -1.60 1.50 0 0 0</pose>
+          <geometry><box><size>6.0 0.20 3.00</size></box></geometry>
           <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.55 0.55 0.60 1</ambient></material>
         </visual>
         <collision name="sw_south_c">
-          <pose>5.75 -1.60 1.50 0 0 0</pose>
-          <geometry><box><size>5.5 0.20 3.00</size></box></geometry>
+          <pose>5.50 -1.60 1.50 0 0 0</pose>
+          <geometry><box><size>6.0 0.20 3.00</size></box></geometry>
         </collision>
 
         <!-- East wall: east of Landing1 + right of B              -->
@@ -251,10 +306,18 @@
       <link name="top_link">
 
         <!-- Main floor slab -->
-        <visual name="tp_floor_v">
-          <pose>9.0 11.25 2.925 0 0 0</pose>
-          <geometry><box><size>12.0 11.5 0.15</size></box></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="tp_floor_v"><pose>9 11.25 3 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>12 11.5</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <visual name="tp_floor_bottom_v"><pose>9 11.25 2.85 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>12 11.5</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
+        </visual>
+        <visual name="tp_floor_east_v"><pose>15 11.25 2.925 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 11.5</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
+        </visual>
+        <visual name="tp_floor_west_v"><pose>3 11.25 2.925 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 11.5</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
+        </visual>
+        <visual name="tp_floor_north_v"><pose>9 17 2.925 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>12 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
+        </visual>
+        <visual name="tp_floor_south_v"><pose>9 5.5 2.925 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>12 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.62 0.62 0.68 1</ambient></material>
         </visual>
         <collision name="tp_floor_c"><pose>9.0 11.25 2.925 0 0 0</pose><geometry><box><size>12.0 11.5 0.15</size></box></geometry></collision>
 
@@ -314,10 +377,18 @@
       <link name="top3_link">
 
         <!-- Main 3F floor slab -->
-        <visual name="tp3_floor_v">
-          <pose>7.0 25.0 4.425 0 0 0</pose>
-          <geometry><box><size>8.0 8.0 0.15</size></box></geometry>
-          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
+        <!-- Different face colors; the original box collision remains unchanged. -->
+        <visual name="tp3_floor_v"><pose>7 25 4.5 0 0 0</pose><geometry><plane><normal>0 0 1</normal><size>8 8</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <visual name="tp3_floor_bottom_v"><pose>7 25 4.35 3.14159265358979 0 0</pose><geometry><plane><normal>0 0 1</normal><size>8 8</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
+        </visual>
+        <visual name="tp3_floor_east_v"><pose>11 25 4.425 0 1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 8</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
+        </visual>
+        <visual name="tp3_floor_west_v"><pose>3 25 4.425 0 -1.5707963267949 0</pose><geometry><plane><normal>0 0 1</normal><size>0.15 8</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
+        </visual>
+        <visual name="tp3_floor_north_v"><pose>7 29 4.425 -1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>8 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
+        </visual>
+        <visual name="tp3_floor_south_v"><pose>7 21 4.425 1.5707963267949 0 0</pose><geometry><plane><normal>0 0 1</normal><size>8 0.15</size></plane></geometry><material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script><ambient>0.58 0.58 0.65 1</ambient></material>
         </visual>
         <collision name="tp3_floor_c"><pose>7.0 25.0 4.425 0 0 0</pose><geometry><box><size>8.0 8.0 0.15</size></box></geometry></collision>
 
